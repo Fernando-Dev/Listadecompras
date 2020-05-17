@@ -1,5 +1,6 @@
 package br.fernando.listadecompras
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -22,24 +23,15 @@ class MainActivity : AppCompatActivity() {
         //definindo o adaptador na lista
         list_view_produtos.adapter = produtosAdapter
 
-        //definicao do clique do botao
-        btn_inserir.setOnClickListener {
+        //adicionando a intencao de abrir a tela de cadastro
+        btn_adicionar.setOnClickListener {
+            //criando a intencao
+            val intent = Intent(this, CadastroActivity::class.java)
 
-            //pegando o produto digitado pelo usuario
-            val produto = txt_produto.text.toString()
-
-            //verificando se o usuario digitou algum valor
-            if (produto.isNotEmpty()) {
-                //enviando o produto para lista
-                produtosAdapter.add(produto)
-
-                //limpando a caixa de texto
-                txt_produto.text.clear()
-
-            } else {
-                txt_produto.error = "Preencha um valor"
-            }
+            //iniciando a atividade
+            startActivity(intent)
         }
+
         //metodo que retorna um booleano confirmando o clique na lista
         list_view_produtos.setOnItemLongClickListener {
                 adapterView: AdapterView<*>,
