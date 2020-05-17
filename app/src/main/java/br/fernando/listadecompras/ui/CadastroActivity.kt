@@ -1,12 +1,20 @@
 package br.fernando.listadecompras.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import br.fernando.listadecompras.R
 import br.fernando.listadecompras.modelo.Produto
+import br.fernando.listadecompras.repositorio.produtoGlobal
 import kotlinx.android.synthetic.main.activity_cadastro.*
 
 class CadastroActivity : AppCompatActivity() {
+
+    val COD_IMAGE = 101
+    var imageBitMap: Bitmap?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +32,8 @@ class CadastroActivity : AppCompatActivity() {
             if (produto.isNotEmpty() && qtd.isNotEmpty() && valor.isNotEmpty()) {
 
                 //enviando o produto para lista
-                val prod = Produto(produto,qtd.toInt(),valor.toDouble())
+                val prod = Produto(produto,qtd.toInt(),valor.toDouble(), imageBitMap)
+                produtoGlobal.add(prod)
 
                 //limpando a caixa de texto
                 txt_produto.text.clear()
@@ -38,5 +47,43 @@ class CadastroActivity : AppCompatActivity() {
                 txt_valor.error = if (txt_valor.text.isEmpty())"preencha o valor" else null
             }
         }
+        //capturando clique no icone da foto para abrir a galeria
+        img_foto_produto.setOnClickListener {
+            abrirGaleria()
+        }
+    }
+
+
+    //metodo de sobrescrita para saber o resultado da abertura da atividade da galeria
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode==COD_IMAGE && resultCode== Activity.RESULT_OK){
+            if (data != null){
+                //neste ponto podemos acessar a foto atraves da variavel data
+                //lendo a URI com a imagem
+                val inputStream = data.data?.let { contentResolver.openInputStream(it) }
+
+                //transformando o resulado em bitmap
+                imageBitMap = BitmapFactory.decodeStream(inputStream)
+
+                //exibir a imagem no aplicativo
+                img_foto_produto.setImageBitmap(imageBitMap)
+            }
+        }
+
+    }
+
+    fun abrirGaleria(){
+        //definindo a acao do conteudo
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+
+        //definindo filtro para imagens
+        intent.type="image/*"
+
+        //inicialiando a activity com o resultado
+        startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"),COD_IMAGE)
+
+
     }
 }
