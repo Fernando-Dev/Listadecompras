@@ -1,4 +1,4 @@
-package br.fernando.listadecompras
+package br.fernando.listadecompras.ui
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import br.fernando.listadecompras.R
 import br.fernando.listadecompras.modelo.Produto
 import java.text.NumberFormat
 import java.util.*
