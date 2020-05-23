@@ -10,7 +10,7 @@ import android.graphics.Bitmap
  * bitmap?=null fala que aceita o valor nulo para o atributo foto
  */
 data class Produto(
-    val nome: String, val quantidade: Int,
+    val id: Int, val nome: String, val quantidade: Int,
     val valor: Double, val foto: Bitmap?=null
 )
 
